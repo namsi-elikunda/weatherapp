@@ -7,4 +7,6 @@
     <string name="humidity">Humidity</string>
     <string name="precipitation">Precipitation</string>
     <string name="current_wether_screen">Day</string>
+    <string name="temperature_degrees">%d°</string>
+
 </resources>
