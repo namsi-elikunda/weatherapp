@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">weatherapp</string>
+    <string name="title_activity_weatherscreen">Weatherscreen</string>
+    <string name="title_activity_current_weatherscreen">currentWeatherscreen</string>
+    <string name="title_activity_bottom_weather_sheet">bottomWeatherSheet</string>
+    <string name="windNow">Wind now</string>
+    <string name="humidity">Humidity</string>
+    <string name="precipitation">Precipitation</string>
+    <string name="current_wether_screen">Day</string>
+</resources>
