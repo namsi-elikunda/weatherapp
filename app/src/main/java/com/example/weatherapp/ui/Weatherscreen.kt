@@ -213,8 +213,8 @@ fun CurrentDailyForecast(forecast: FullWeather) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
           //  Text(text = Sunset(forecast.current[0].sunset), fontSize = 18.sp, color = Color.White)
-          //  Text(text = NightTemperature(forecast.current[0].temp), fontSize = 18.sp, color = Color.White
-            )
+          //  Text(text = NightTemperature(forecast.current[0].temp), fontSize = 18.sp, color = Color.White)
+
 
 
         }
