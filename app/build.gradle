@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+
 }
 
 android {
@@ -21,6 +24,7 @@ android {
 
     buildTypes {
         release {
+            buildConfigField("String", "API_KEY", "\"${findProperty("openweather.apiKey")}\"")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -62,6 +66,11 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
 
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.24.6-alpha"
+    implementation "com.google.accompanist:accompanist-permissions:0.24.6-alpha"
+
+
+    implementation"com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     implementation 'com.google.android.gms:play-services-location:19.0.1'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

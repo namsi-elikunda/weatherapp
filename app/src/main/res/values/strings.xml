@@ -1,12 +1,18 @@
 <resources>
     <string name="app_name">weatherapp</string>
     <string name="title_activity_weatherscreen">Weatherscreen</string>
-    <string name="title_activity_current_weatherscreen">currentWeatherscreen</string>
-    <string name="title_activity_bottom_weather_sheet">bottomWeatherSheet</string>
-    <string name="windNow">Wind now</string>
+    <string name="wind">Wind</string>
     <string name="humidity">Humidity</string>
     <string name="precipitation">Precipitation</string>
     <string name="current_wether_screen">Day</string>
     <string name="temperature_degrees">%d°</string>
+     <string name="Temperature">Temperature</string>
+    <string name="title_activity_location_permision">LocationPermision</string>
+    <string name="location_permission_content_description">Location Icon</string>
+    <string name="location_permission_description">Please allow the app to access your location.</string>
+    <string name="location_permission_continue">OK</string>
+    <string name="location_not_available">The app needs your permission to access your current location to display the weather for your location.</string>
+    <string name="location_continue">OK</string>
+
 
 </resources>
