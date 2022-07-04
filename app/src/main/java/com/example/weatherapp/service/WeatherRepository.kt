@@ -27,7 +27,7 @@ class WeatherRepository@Inject constructor(
     @RequiresPermission(ACCESS_FINE_LOCATION)
     fun getCurrentWeather(): Flow<CurrentWeather> {
         return locationFlow().map {
-            service.getCurrentWeather(it.latitude, it.longitude, BuildConfig.BUILD_TYPE).body()
+            service.getCurrentWeather(it.latitude, it.longitude, BuildConfig.API_KEY).body()
         }.filterNotNull()
     }
 
@@ -35,7 +35,7 @@ class WeatherRepository@Inject constructor(
     @RequiresPermission(ACCESS_FINE_LOCATION)
     fun getFullWeather(): Flow<FullWeather> {
         return locationFlow().map {
-            service.getFullWeather(it.latitude,it.longitude,BuildConfig.BUILD_TYPE).body()
+            service.getFullWeather(it.latitude,it.longitude,BuildConfig.API_KEY).body()
         }.filterNotNull()
     }
 
@@ -44,7 +44,7 @@ class WeatherRepository@Inject constructor(
         val client = LocationServices.getFusedLocationProviderClient(application)
         val callback= object :LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
-                trySend(result.lastLocation)
+                val trySend = trySend(result.lastLocation)
 
             }
 

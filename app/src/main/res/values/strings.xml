@@ -13,6 +13,8 @@
     <string name="location_permission_continue">OK</string>
     <string name="location_not_available">The app needs your permission to access your current location to display the weather for your location.</string>
     <string name="location_continue">OK</string>
+    <string name="Sunset">sunset</string>
+    <string name="NightTemp">nighttemp</string>
 
 
 </resources>

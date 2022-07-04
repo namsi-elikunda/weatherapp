@@ -1,7 +1,7 @@
 package com.example.weatherapp
 
 
-import androidx.activity.compose.LocalActivityResultRegistryOwner.current
+
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,15 +18,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weatherapp.service.WeatherRepository
 import com.example.weatherapp.service.dto.CurrentWeather
 import com.example.weatherapp.service.dto.FullWeather
 import com.example.weatherapp.ui.WeatherviewModel
-import com.example.weatherapp.ui.theme.WeatherappTheme
-import org.intellij.lang.annotations.JdkConstants
 import kotlin.math.roundToInt
 
 
@@ -212,12 +208,37 @@ fun CurrentDailyForecast(forecast: FullWeather) {
                 .align(Alignment.TopCenter),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-          //  Text(text = Sunset(forecast.current[0].sunset), fontSize = 18.sp, color = Color.White)
-          //  Text(text = NightTemperature(forecast.current[0].temp), fontSize = 18.sp, color = Color.White)
-
+           Text(text = Sunset(forecast.current[0].sunset), fontSize = 18.sp, color = Color.White)
+            Text(text =NightTemp (forecast.current[1].temp.night), fontSize = 18.sp, color = Color.White)
 
 
         }
     }
 }
+@Composable
+fun Sunset(sunset: Int): String {
+    return stringResource(id =R.string.Sunset, sunset)
+
+}
+@Composable
+fun NightTemp(temp: Double): String {
+   return stringResource(id = R.string.NightTemp, temp)
+
+}
+
+@DrawableRes
+private fun CurrentWeather.backgroundColour(): Int {
+    val conditions = weather.first().main
+    return when {
+        conditions.contains("cloud", ignoreCase = true) -> R.drawable.cloudy
+        conditions.contains("rain", ignoreCase = true) -> R.drawable.rain
+        else ->R.drawable.sunny
+    }
+}
+
+
+
+
+
+
 
