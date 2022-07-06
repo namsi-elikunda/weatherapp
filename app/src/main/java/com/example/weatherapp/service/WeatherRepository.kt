@@ -33,28 +33,35 @@ class WeatherRepository@Inject constructor(
 
 
     @RequiresPermission(ACCESS_FINE_LOCATION)
-    fun getFullWeather(): Flow<FullWeather> {
+    fun getcurrentDailyForecast(): Flow<FullWeather> {
         return locationFlow().map {
             service.getFullWeather(it.latitude,it.longitude,BuildConfig.API_KEY).body()
         }.filterNotNull()
     }
 
     @RequiresPermission(ACCESS_FINE_LOCATION)
-    private fun locationFlow() = channelFlow<Location> {
+    private fun locationFlow() = channelFlow {
         val client = LocationServices.getFusedLocationProviderClient(application)
         val callback= object :LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
-                val trySend = trySend(result.lastLocation)
+                trySend(result.lastLocation)
 
             }
 
-        }
         }
         val request = LocationRequest.create()
             .setInterval(10_000)
             .setFastestInterval(5_000)
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
             .setSmallestDisplacement(170f)
+
+        client.requestLocationUpdates(request, callback, Looper.getMainLooper())
+
+        awaitClose {
+            client.removeLocationUpdates(callback)
+        }
+
+    }
 
 
 
