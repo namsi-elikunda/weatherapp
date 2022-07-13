@@ -22,11 +22,16 @@ android {
     }
 
     buildTypes {
+        Properties properties = new Properties()
+        try {
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        } catch (Exception ignored) {
+        }
         debug {
-            buildConfigField("String", "API_KEY", "\"${findProperty("openweather.apiKey")}\"")
+            buildConfigField("String", "API_KEY", "\"${properties.getProperty("openweather.apiKey")}\"")
         }
         release {
-            buildConfigField("String", "API_KEY", "\"${findProperty("openweather.apiKey")}\"")
+            buildConfigField("String", "API_KEY", "\"${properties.getProperty("openweather.apiKey")}\"")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -40,6 +45,13 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
+        useIR = true
+        freeCompilerArgs += [
+                "-Xopt-in=kotlin.RequiresOptIn",
+                "-Xopt-in=kotlin.time.ExperimentalTime",
+                "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "-Xopt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi",
+        ]
     }
     buildFeatures {
         compose true
@@ -88,8 +100,9 @@ dependencies {
     kapt 'com.google.dagger:hilt-compiler:2.42'
 
 
-
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
     implementation 'com.google.android.gms:play-services-location:19.0.1'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.7"
 }
