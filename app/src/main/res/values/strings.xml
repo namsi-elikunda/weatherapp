@@ -15,6 +15,9 @@
     <string name="location_continue">OK</string>
     <string name="Sunset">sunset</string>
     <string name="NightTemp">nighttemp</string>
+    <string name="request_permission_button_label">REQUEST PERMISSION</string>
+    <string name="never_show_again_button_label">NEVER SHOW AGAIN</string>
+    <string name="location_permission_rationale">Location service is important for effective shop recommendation by this app. Please grant the permission.</string>
 
 
 </resources>

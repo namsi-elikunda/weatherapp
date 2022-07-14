@@ -1,17 +1,20 @@
 package com.example.weatherapp
 
-import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import com.example.weatherapp.ui.ui.LocationDetails
-import com.example.weatherapp.ui.ui.LocationNotAvailable
-import com.example.weatherapp.ui.ui.WeatherviewModel
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.example.weatherapp.ui.theme.WeatherappTheme
+import com.example.weatherapp.ui.ui.LocationNotAvailable
+import com.example.weatherapp.ui.ui.Weatherscreen
+import com.example.weatherapp.ui.ui.WeatherviewModel
+import com.example.weatherapp.ui.ui.utils.MyUpdatedLocationArgs
+import com.example.weatherapp.ui.ui.utils.rememberMyUpdatedLocation
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionStatus.*
-import com.google.accompanist.permissions.rememberPermissionState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,21 +26,41 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             WeatherappTheme {
-                val permissionState= rememberPermissionState(permission = Manifest.permission.ACCESS_FINE_LOCATION)
-                when(val status=permissionState.status){
-                    Granted-> Weatherscreen(viewModel)
-                    is Denied->{
-                        if (status.shouldShowRationale){
+                var shouldRequestLocationPermission by remember {
+                    mutableStateOf(false)
+                }
+                val args = MyUpdatedLocationArgs(
+                    onMyUpdatedLocationChanged = viewModel::setLocation,
+                    shouldRequestPermission = shouldRequestLocationPermission,
+                ) {
+
+                }
+                val myUpdatedLocation = rememberMyUpdatedLocation(args = args)
+                if (myUpdatedLocation.isLocationPermissionGranted) {
+                    Weatherscreen(viewModel)
+                } else {
+                    LocationNotAvailable(onContinueClick = {
+                        shouldRequestLocationPermission = true
+                    })
+                }
+                /*
+                val permissionState =
+                    rememberPermissionState(permission = Manifest.permission.ACCESS_FINE_LOCATION)
+                when (val status = permissionState.status) {
+                    Granted -> Weatherscreen(viewModel)
+                    is Denied -> {
+                        if (status.shouldShowRationale) {
                             LocationNotAvailable(onContinueClick = permissionState::launchPermissionRequest)
-                        }else{
-                            LocationDetails (onContinueClick = permissionState::launchPermissionRequest)
+                        } else {
+                            LocationDetails(onContinueClick = permissionState::launchPermissionRequest)
                         }
                     }
-                }
+                }*/
 
             }
         }
-    } }
+    }
+}
 
 
 

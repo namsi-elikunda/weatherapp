@@ -1,4 +1,4 @@
-package com.example.weatherapp
+package com.example.weatherapp.ui.ui
 
 
 import androidx.compose.foundation.Image
@@ -16,13 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weatherapp.service.dto.CurrentWeather
 import com.example.weatherapp.service.dto.FullWeather
-import com.example.weatherapp.ui.ui.WeatherviewModel
 import kotlin.math.roundToInt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.weatherapp.R
 
 
 @Composable
@@ -33,7 +32,7 @@ fun Weatherscreen(viewModel: WeatherviewModel) {
     //var forecast: WeatherviewModel by remember { mutableStateOf(null)}
 //   val current by viewModel.current.collectAsState(initial = null)
   //  val forecast by viewModel.forecast.collectAsState(initial = null)
-    val current: State<CurrentWeather?> =viewModel.current.collectAsState(null)
+    val current: CurrentWeather? by viewModel.current.collectAsState()
     val forecast: State<FullWeather?> =viewModel.forecast.collectAsState(null)
 
 
@@ -51,7 +50,7 @@ fun Weatherscreen(viewModel: WeatherviewModel) {
         contentColor = Color.White,
         elevation = 10.dp
     ) {
-        current.value?.let {  weatherView(weather = it)
+        current?.let {  weatherView(weather = it)
             temperatureView(it)
             Divider(color = Color.White)}}
         Card(
@@ -165,7 +164,7 @@ fun currentDailyForecast(forecast: FullWeather) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = sunset(forecast.current[0].sunset), fontSize = 18.sp, color = Color.White)
-            Text(text =nightTemp (forecast.current[1].temp.night), fontSize = 18.sp, color = Color.White)
+            Text(text = nightTemp (forecast.current[1].temp.night), fontSize = 18.sp, color = Color.White)
 
 
         }
