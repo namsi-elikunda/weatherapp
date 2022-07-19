@@ -7,6 +7,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,14 +17,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner.current
 import com.example.weatherapp.R
+import com.example.weatherapp.service.dto.currentWeather
 
 @Composable
 fun screenWeather(viewModel: WeatherviewModel) {
 
-  //    val current: currentWeather? by viewModel.current.collectAsState()
+  val current: currentWeather? by viewModel.current.collectAsState()
 
 
     Column(
@@ -77,7 +78,7 @@ fun screenWeather(viewModel: WeatherviewModel) {
 
 }
 @Composable
-fun weatherView(current: ViewModelStoreOwner) {
+fun weatherView(current: currentWeather) {
     Box {
         Row(
             Modifier
@@ -100,13 +101,13 @@ fun weatherView(current: ViewModelStoreOwner) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Temperature",
+                text = current.weather.firstOrNull()?.main?:"Main",
                 textAlign = TextAlign.Center,
                 color = Color.White,
                 fontSize = 28.sp
             )
             Text(
-                text = "Country",
+                text = current.sys.country,
                 textAlign = TextAlign.Center,
                 color = Color.White,
                 fontSize = 16.sp
