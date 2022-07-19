@@ -6,7 +6,7 @@
     <string name="precipitation">Precipitation</string>
     <string name="current_wether_screen">Day</string>
     <string name="temperature_degrees">%d°</string>
-     <string name="Temperature">Temperature</string>
+    <string name="Temperature">Temperature</string>
     <string name="title_activity_location_permision">LocationPermision</string>
     <string name="location_permission_content_description">Location Icon</string>
     <string name="location_permission_description">Please allow the app to access your location.</string>
@@ -18,6 +18,8 @@
     <string name="request_permission_button_label">REQUEST PERMISSION</string>
     <string name="never_show_again_button_label">NEVER SHOW AGAIN</string>
     <string name="location_permission_rationale">Location service is important for effective shop recommendation by this app. Please grant the permission.</string>
+    <string name="title_activity_screen_weather">ScreenWeather</string>
+    <string name="title_activity_weather_screen_view">weatherScreenView</string>
 
 
 </resources>

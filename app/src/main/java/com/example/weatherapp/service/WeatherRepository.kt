@@ -3,9 +3,10 @@ package com.example.weatherapp.service
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.Application
 import android.os.Looper
+import android.util.Log
 import androidx.annotation.RequiresPermission
 import com.example.weatherapp.BuildConfig
-import com.example.weatherapp.service.dto.CurrentWeather
+import com.example.weatherapp.service.dto.currentWeather
 import com.example.weatherapp.service.dto.FullWeather
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -22,7 +23,8 @@ class WeatherRepository @Inject constructor(
     private val application: Application,
 ) {
     @RequiresPermission(ACCESS_FINE_LOCATION)
-    fun getCurrentWeather(location: LatLng): Flow<CurrentWeather?> {
+    fun getCurrentWeather(location: LatLng): Flow<currentWeather?> {
+        Log.d("fake tag", "getCurrentWeather: ${BuildConfig.API_KEY}")
         return flow {
             val currentWeather = service.getCurrentWeather(
                 location.latitude,

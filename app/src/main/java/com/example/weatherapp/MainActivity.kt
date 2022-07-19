@@ -10,8 +10,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.weatherapp.ui.theme.WeatherappTheme
 import com.example.weatherapp.ui.ui.LocationNotAvailable
-import com.example.weatherapp.ui.ui.Weatherscreen
 import com.example.weatherapp.ui.ui.WeatherviewModel
+import com.example.weatherapp.ui.ui.screenWeather
 import com.example.weatherapp.ui.ui.utils.MyUpdatedLocationArgs
 import com.example.weatherapp.ui.ui.utils.rememberMyUpdatedLocation
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                 }
                 val myUpdatedLocation = rememberMyUpdatedLocation(args = args)
                 if (myUpdatedLocation.isLocationPermissionGranted) {
-                    Weatherscreen(viewModel)
+                    screenWeather(viewModel)
                 } else {
                     LocationNotAvailable(onContinueClick = {
                         shouldRequestLocationPermission = true
