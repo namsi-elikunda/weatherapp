@@ -25,6 +25,7 @@ class WeatherviewModel @Inject constructor(repository: WeatherRepository) : View
     }.catch {
         Log.e(TAG, "Error : ${it.localizedMessage}", it)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
     val forecast: Flow<FullWeather> = repository.getcurrentDailyForecast()
 
     fun setLocation(location: LatLng) {

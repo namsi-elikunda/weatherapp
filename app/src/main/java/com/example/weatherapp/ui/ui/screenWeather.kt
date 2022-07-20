@@ -22,18 +22,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weatherapp.R
 import com.example.weatherapp.service.dto.FullWeather
+import com.example.weatherapp.service.dto.FullWeather.Current
 import com.example.weatherapp.service.dto.currentWeather
-import com.example.weatherapp.ui.theme.CloudyBlue
-import com.example.weatherapp.ui.theme.RainyGrey
-import com.example.weatherapp.ui.theme.SunnyYellow
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlin.math.roundToInt
 
 @Composable
 fun screenWeather(viewModel: WeatherviewModel) {
 
     val current: currentWeather? by viewModel.current.collectAsState()
-    val forecast: State<FullWeather?> = viewModel.forecast.collectAsState(null)
+    val forecast: FullWeather? by viewModel.forecast.collectAsState(null)
 
 
     Column(
@@ -76,9 +73,9 @@ fun screenWeather(viewModel: WeatherviewModel) {
                 shape = RoundedCornerShape(23.dp)
 
             ) {
-
-                currentDailyForecast(forecast)
-
+                forecast?.let {
+                    currentDailyForecast(forecast = it)
+                }
 
             }
 
@@ -87,6 +84,7 @@ fun screenWeather(viewModel: WeatherviewModel) {
     }
 
 }
+
 @Composable
 fun weatherView(current: currentWeather) {
     Box {
@@ -164,6 +162,7 @@ fun temperature(temp: Double): String {
     return stringResource(id = R.string.temperature_degrees, temp.roundToInt())
 
 }
+
 @DrawableRes
 private fun currentWeather.background(): Int {
     val conditions = weather.first().main
@@ -175,9 +174,8 @@ private fun currentWeather.background(): Int {
 }
 
 
-
 @Composable
-fun currentDailyForecast(forecast: State<FullWeather?>) {
+fun currentDailyForecast(forecast: FullWeather) {
     Box {
         Row(
             Modifier
@@ -187,7 +185,7 @@ fun currentDailyForecast(forecast: State<FullWeather?>) {
         ) {
             Text(text = "Night", fontSize = 18.sp, color = Color.White)
             Image(
-                painter = painterResource(R.drawable.night_clear),
+                painter = painterResource(forecast.forecastIcon()),
                 contentDescription = "Background",
                 modifier = Modifier.size(24.dp),
                 alignment = Alignment.Center,
@@ -201,21 +199,29 @@ fun currentDailyForecast(forecast: State<FullWeather?>) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text =Temperature (forecast.value!!.current.temp),
+                text = Temperature(forecast.current.temp),
                 textAlign = TextAlign.Center,
                 color = Color.White,
                 fontSize = 28.sp
             )
-
-
         }
     }
 
 }
 
+private fun FullWeather.forecastIcon(): Int {
+    val conditions = current.weather.first().main
+    return when {
+        conditions.contains("cloud", ignoreCase = true) -> R.drawable.night_partial_cloud
+        conditions.contains("rain", ignoreCase = true) -> R.drawable.night_rain
+        else -> R.drawable.night_clear
+    }
+}
+
+
 @Composable
-fun Temperature(temp: Double):String {
-    return stringResource(id = R.string.temperature_degrees,temp.roundToInt())
+fun Temperature(temp: Double): String {
+    return stringResource(id = R.string.temperature_degrees, temp.roundToInt())
 
 }
 
