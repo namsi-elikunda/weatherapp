@@ -1,5 +1,6 @@
 package com.example.weatherapp.ui.ui
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -7,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -14,16 +16,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weatherapp.R
+import com.example.weatherapp.service.dto.FullWeather
 import com.example.weatherapp.service.dto.currentWeather
+import com.example.weatherapp.ui.theme.CloudyBlue
+import com.example.weatherapp.ui.theme.RainyGrey
+import com.example.weatherapp.ui.theme.SunnyYellow
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import kotlin.math.roundToInt
 
 @Composable
 fun screenWeather(viewModel: WeatherviewModel) {
 
-  val current: currentWeather? by viewModel.current.collectAsState()
+    val current: currentWeather? by viewModel.current.collectAsState()
+    val forecast: State<FullWeather?> = viewModel.forecast.collectAsState(null)
 
 
     Column(
@@ -45,7 +55,7 @@ fun screenWeather(viewModel: WeatherviewModel) {
 
             ) {
             current?.let {
-               weatherView(current = it)
+                weatherView(current = it)
             }
         }
         Column(
@@ -66,10 +76,10 @@ fun screenWeather(viewModel: WeatherviewModel) {
                 shape = RoundedCornerShape(23.dp)
 
             ) {
-                current?.let {
-                    currentDailyForecast()
 
-                }
+                currentDailyForecast(forecast)
+
+
             }
 
         }
@@ -82,12 +92,12 @@ fun weatherView(current: currentWeather) {
     Box {
         Row(
             Modifier
-                 .padding(top = 28.dp)
+                .padding(top = 28.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
         ) {
             Image(
-                painter = painterResource(R.drawable.day_clear),
+                painter = painterResource(id = current.background()),
                 contentDescription = "Background",
                 modifier = Modifier.size(150.dp),
                 alignment = Alignment.Center,
@@ -101,28 +111,28 @@ fun weatherView(current: currentWeather) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = current.weather.firstOrNull()?.main?:"Main",
+                text = temperature(current.main.temp),
                 textAlign = TextAlign.Center,
                 color = Color.White,
-                fontSize = 28.sp
+                fontSize = 38.sp
             )
             Text(
                 text = current.sys.country,
                 textAlign = TextAlign.Center,
                 color = Color.White,
-                fontSize = 16.sp
+                fontSize = 36.sp
             )
         }
         Row(
             Modifier
-                .padding(top = 28.dp)
+                .padding(top = 18.dp)
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter),
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
-            Text(text = "WindNow", fontSize = 18.sp, color = Color.White)
-            Text(text = "Humidity", fontSize = 15.sp, color = Color.White)
-            Text(text = "Precipitation", fontSize = 15.sp, color = Color.White)
+            Text(text = WindNow(current.wind.speed), fontSize = 18.sp, color = Color.White)
+            Text(text = Humidity(current.main.humidity), fontSize = 15.sp, color = Color.White)
+            Text(text = Precipitation(current.main.seaLevel), fontSize = 15.sp, color = Color.White)
         }
 
     }
@@ -131,7 +141,43 @@ fun weatherView(current: currentWeather) {
 
 
 @Composable
-fun currentDailyForecast() {
+fun Precipitation(seaLevel: Int): String {
+    return stringResource(id = R.string.precipitation, seaLevel)
+
+}
+
+@Composable
+fun Humidity(humidity: Int): String {
+    return stringResource(id = R.string.humidity, humidity)
+
+
+}
+
+@Composable
+fun WindNow(speed: Double): String {
+    return stringResource(id = R.string.windNow, speed.roundToInt())
+
+}
+
+@Composable
+fun temperature(temp: Double): String {
+    return stringResource(id = R.string.temperature_degrees, temp.roundToInt())
+
+}
+@DrawableRes
+private fun currentWeather.background(): Int {
+    val conditions = weather.first().main
+    return when {
+        conditions.contains("cloud", ignoreCase = true) -> R.drawable.fog
+        conditions.contains("rain", ignoreCase = true) -> R.drawable.day_rain
+        else -> R.drawable.day_clear
+    }
+}
+
+
+
+@Composable
+fun currentDailyForecast(forecast: State<FullWeather?>) {
     Box {
         Row(
             Modifier
@@ -150,12 +196,12 @@ fun currentDailyForecast() {
         }
         Column(
             Modifier
-                .padding(top = 48.dp)
+                .padding(top = 18.dp)
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Temperature",
+                text =Temperature (forecast.value!!.current.temp),
                 textAlign = TextAlign.Center,
                 color = Color.White,
                 fontSize = 28.sp
@@ -164,11 +210,12 @@ fun currentDailyForecast() {
 
         }
     }
+
 }
 
+@Composable
+fun Temperature(temp: Double):String {
+    return stringResource(id = R.string.temperature_degrees,temp.roundToInt())
 
-//@Preview(showBackground = true)
-//@Composable
-//fun Preview() {
-//  screenWeather()
-//}
+}
+

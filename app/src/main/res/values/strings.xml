@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">weatherapp</string>
     <string name="title_activity_weatherscreen">Weatherscreen</string>
-    <string name="wind">Wind</string>
-    <string name="humidity">Humidity</string>
-    <string name="precipitation">Precipitation</string>
+    <string name="windNow">%dkm\</string>
+    <string name="humidity">%d%%</string>
+    <string name="precipitation">%d%%</string>
     <string name="current_wether_screen">Day</string>
     <string name="temperature_degrees">%d°</string>
     <string name="Temperature">Temperature</string>
